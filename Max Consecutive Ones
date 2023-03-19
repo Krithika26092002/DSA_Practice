@@ -1,0 +1,15 @@
+int findMaxConsecutiveOnes(int* nums, int numsSize){
+    int count=0;
+    int ans=0;
+    for(int i=0;i<=numsSize-1;i++)
+    {   if(nums[i]==0)
+            count=0;
+        else
+        {   count++;
+            ans=fmax(ans,count);
+	    }
+	printf("\nANS=%d\n\n",ans);
+	printf("\ncount=%d\n\n",count);
+    }
+return ans;	            
+}
