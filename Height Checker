@@ -1,0 +1,11 @@
+class Solution:
+    def heightChecker(self, heights: List[int]) -> int:
+        i = 0
+        l = len(heights)
+        k = 0
+        expected = heights.copy()
+        expected.sort()
+        for i in range(0,l,1):
+            if (heights[i] != expected[i]):
+                k = k+1
+        return k
