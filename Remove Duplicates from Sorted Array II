@@ -1,0 +1,18 @@
+class Solution(object):
+    def removeDuplicates(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        l = len(nums)
+        i = 0
+        while i<l: #Range value always gets fixed in the starting itself and it won't change later
+            val = nums[i]
+            count = nums.count(val)
+            while count>2:
+                nums.remove(val)
+                count=count-1
+                l = len(nums)
+            i+=1
+        k = len(nums)
+        return k
