@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool isPalindrome(std::string s) {
+        auto it = std::remove_if(s.begin(), s.end(), [](char const &c) {
+            return !std::isalnum(c);
+        });
+     
+        s.erase(it, s.end());
+        
+        int left = 0;
+        int right = s.length() - 1;
+        while (left < right) {
+            char leftChar = std::tolower(s[left]);  // Convert to lowercase for case-insensitive comparison
+            char rightChar = std::tolower(s[right]);
+            
+            if (leftChar != rightChar) {
+                return false;  // Return false if characters don't match
+            }
+            
+            left++;
+            right--;
+        }
+
+        return true;  // Return true if the string is a palindrome
+    }
+};
