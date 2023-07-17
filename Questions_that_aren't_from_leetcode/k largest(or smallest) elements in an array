@@ -1,0 +1,516 @@
+// C++ code for K largest elements in an array
+#include <bits/stdc++.h>
+using namespace std;
+ 
+void kLargest(int arr[], int n, int k)
+{
+    // Sort the given array arr in reverse order.
+    sort(arr, arr + n, greater<int>());
+ 
+    // Print the first kth largest elements
+    for (int i = 0; i < k; i++)
+        cout << arr[i] << " ";
+}
+ 
+// Driver code
+int main()
+{
+    int arr[] = { 1, 23, 12, 9, 30, 2, 50 };
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int k = 3;
+    kLargest(arr, n, k);
+}
+****************************************************
+K largest(or smallest) elements in an array using Min-Heap:
+****************************************************
+// C++ program for the above approach
+ 
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// Swap function to interchange
+// the value of variables x and y
+int swap(int& x, int& y)
+{
+    int temp = x;
+    x = y;
+    y = temp;
+}
+ 
+// Min Heap Class
+// arr holds reference to an integer
+// array size indicate the number of
+// elements in Min Heap
+class MinHeap {
+ 
+    int size;
+    int* arr;
+ 
+public:
+    // Constructor to initialize the size and arr
+    MinHeap(int size, int input[]);
+ 
+    // Min Heapify function, that assumes that
+    // 2*i+1 and 2*i+2 are min heap and fix the
+    // heap property for i.
+    void heapify(int i);
+ 
+    // Build the min heap, by calling heapify
+    // for all non-leaf nodes.
+    void buildHeap();
+};
+ 
+// Constructor to initialize data
+// members and creating mean heap
+MinHeap::MinHeap(int size, int input[])
+{
+    // Initializing arr and size
+ 
+    this->size = size;
+    this->arr = input;
+ 
+    // Building the Min Heap
+    buildHeap();
+}
+ 
+// Min Heapify function, that assumes
+// 2*i+1 and 2*i+2 are min heap and
+// fix min heap property for i
+ 
+void MinHeap::heapify(int i)
+{
+    // If Leaf Node, Simply return
+    if (i >= size / 2)
+        return;
+ 
+    // variable to store the smallest element
+    // index out of i, 2*i+1 and 2*i+2
+    int smallest;
+ 
+    // Index of left node
+    int left = 2 * i + 1;
+ 
+    // Index of right node
+    int right = 2 * i + 2;
+ 
+    // Select minimum from left node and
+    // current node i, and store the minimum
+    // index in smallest variable
+    smallest = arr[left] < arr[i] ? left : i;
+ 
+    // If right child exist, compare and
+    // update the smallest variable
+    if (right < size)
+        smallest
+            = arr[right] < arr[smallest] ? right : smallest;
+ 
+    // If Node i violates the min heap
+    // property, swap  current node i with
+    // smallest to fix the min-heap property
+    // and recursively call heapify for node smallest.
+    if (smallest != i) {
+        swap(arr[i], arr[smallest]);
+        heapify(smallest);
+    }
+}
+ 
+// Build Min Heap
+void MinHeap::buildHeap()
+{
+    // Calling Heapify for all non leaf nodes
+    for (int i = size / 2 - 1; i >= 0; i--) {
+        heapify(i);
+    }
+}
+ 
+void FirstKelements(int arr[], int size, int k)
+{
+    // Creating Min Heap for given
+    // array with only k elements
+    MinHeap* m = new MinHeap(k, arr);
+ 
+    // Loop For each element in array
+    // after the kth element
+    for (int i = k; i < size; i++) {
+ 
+        // if current element is smaller
+        // than minimum element, do nothing
+        // and continue to next element
+        if (arr[0] > arr[i])
+            continue;
+ 
+        // Otherwise Change minimum element to
+        // current element, and call heapify to
+        // restore the heap property
+        else {
+            arr[0] = arr[i];
+            m->heapify(0);
+        }
+    }
+    // Now min heap contains k maximum
+    // elements, Iterate and print
+    for (int i = 0; i < k; i++) {
+        cout << arr[i] << " ";
+    }
+}
+// Driver code
+int main()
+{
+ 
+    int arr[]
+        = { 11, 3, 2, 1, 15, 5, 4, 45, 88, 96, 50, 45 };
+ 
+    int size = sizeof(arr) / sizeof(arr[0]);
+ 
+    // Size of Min Heap
+    int k = 3;
+ 
+    FirstKelements(arr, size, k);
+ 
+    return 0;
+}
+****************************************************************
+K largest(or smallest) elements in an array using Quick Sort partitioning algorithm:
+****************************************************************
+#include <bits/stdc++.h>
+using namespace std;
+ 
+int partition(int arr[], int l, int r);
+ 
+// This function stops at K'th smallest element in arr[l..r]
+// using QuickSort based method.
+void kthSmallest(int arr[], int l, int r, int K, int N)
+{
+    // If k is smaller than number of elements in array
+    if (K > 0 && K <= r - l + 1) {
+ 
+        // Partition the array around last element and get
+        // position of pivot element in sorted array
+        int pos = partition(arr, l, r);
+ 
+        // If position is same as k
+        if (pos - l == K - 1)
+            return;
+ 
+        // If position is more, recur
+        // for left subarray
+        else if (pos - l > K - 1)
+            return kthSmallest(arr, l, pos - 1, K, N);
+ 
+        // Else recur for right subarray
+        else
+            return kthSmallest(arr, pos + 1, r,
+                               K - pos + l - 1, N);
+    }
+ 
+    // If k is more than number of elements in array
+    cout << "Invalid value of K";
+}
+ 
+void KthLargest(int arr[], int l, int r, int K, int N)
+{
+    // This function arranges k Largest elements in last k
+    // positions It means it arranges N-K-1 smallest
+    // elements from starting
+ 
+    kthSmallest(arr, l, r, N - K - 1, N);
+}
+ 
+void swap(int* a, int* b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+ 
+int partition(int arr[], int l, int r)
+{
+    int x = arr[r], i = l;
+    for (int j = l; j <= r - 1; j++) {
+        if (arr[j] <= x) {
+            swap(&arr[i], &arr[j]);
+            i++;
+        }
+    }
+ 
+    swap(&arr[i], &arr[r]);
+    return i;
+}
+ 
+// Driver code
+int main()
+{
+    int arr[]
+        = { 11, 3, 2, 1, 15, 5, 4, 45, 88, 96, 50, 45 };
+ 
+    int N = sizeof(arr) / sizeof(arr[0]);
+    int k = 3;
+ 
+    // Function call
+ 
+    // For Smallest
+    kthSmallest(arr, 0, N - 1, k, N);
+ 
+    // Print KSmallest no.
+    if (k >= 1 && k <= N) {
+        cout << k << " largest elements are : ";
+        for (int i = 0; i < k; i++)
+            cout << arr[i] << "  ";
+    }
+ 
+    cout << endl;
+ 
+    // For Largest
+    KthLargest(arr, 0, N - 1, k, N);
+ 
+    // Print KLargest no.
+    if (k >= 1 && k <= N) {
+        cout << k << " largest elements are : ";
+        for (int i = N - 1; i >= N - k; i--)
+            cout << arr[i] << "  ";
+    }
+    return 0;
+}
+***************************************************************
+K largest(or smallest) elements in an array using priority queue library:
+***************************************************************
+// C++ code for k largest/ smallest elements in an array
+#include <bits/stdc++.h>
+using namespace std;
+ 
+// Function to find k largest array element
+void kLargest(vector<int>& v, int N, int K)
+{
+    // Implementation using
+    // a Priority Queue
+    priority_queue<int, vector<int>, greater<int> > pq;
+ 
+    for (int i = 0; i < N; ++i) {
+ 
+        // Insert elements into
+        // the priority queue
+        pq.push(v[i]);
+ 
+        // If size of the priority
+        // queue exceeds k
+        if (pq.size() > K) {
+            pq.pop();
+        }
+    }
+ 
+    // Print the k largest element
+    while (!pq.empty()) {
+        cout << pq.top() << " ";
+        pq.pop();
+    }
+    cout << endl;
+}
+ 
+// Function to find k smallest array element
+void kSmalest(vector<int>& v, int N, int K)
+{
+    // Implementation using
+    // a Priority Queue
+    priority_queue<int> pq;
+ 
+    for (int i = 0; i < N; ++i) {
+ 
+        // Insert elements into
+        // the priority queue
+        pq.push(v[i]);
+ 
+        // If size of the priority
+        // queue exceeds k
+        if (pq.size() > K) {
+            pq.pop();
+        }
+    }
+ 
+    // Print the k smallest element
+    while (!pq.empty()) {
+        cout << pq.top() << " ";
+        pq.pop();
+    }
+}
+ 
+// driver program
+int main()
+{
+    // Given array
+    vector<int> arr
+        = { 11, 3, 2, 1, 15, 5, 4, 45, 88, 96, 50, 45 };
+    // Size of array
+    int n = arr.size();
+    int k = 3;
+    cout << k << " largest elements are : ";
+    kLargest(arr, n, k);
+    cout << k << " smallest elements are : ";
+    kSmalest(arr, n, k);
+}
+*******************************************************
+K largest(or smallest) elements in an array by creating a BST and Getting K greatest Elements:
+*******************************************************
+// C++ program for the above approach
+ 
+#include <bits/stdc++.h>
+using namespace std;
+ 
+struct Node {
+    int data;
+    struct Node* left;
+    struct Node* right;
+};
+ 
+class Tree {
+public:
+    Node* root = NULL;
+    void addNode(int data)
+    {
+        Node* newNode = new Node();
+        newNode->data = data;
+        if (!root) {
+            root = newNode;
+        }
+        else {
+            Node* cur = root;
+            while (cur) {
+                if (cur->data > data) {
+                    if (cur->left) {
+                        cur = cur->left;
+                    }
+                    else {
+                        cur->left = newNode;
+                        return;
+                    }
+                }
+                else {
+                    if (cur->right) {
+                        cur = cur->right;
+                    }
+                    else {
+                        cur->right = newNode;
+                        return;
+                    }
+                }
+            }
+        }
+    }
+    void printGreatest(int& K, vector<int>& sol, Node* node)
+    {
+        if (!node || K == 0)
+            return;
+        printGreatest(K, sol, node->right);
+        if (K <= 0)
+            return;
+        sol.push_back(node->data);
+        K--;
+        printGreatest(K, sol, node->left);
+    }
+};
+ 
+class Solution {
+public:
+    vector<int> kLargest(int arr[], int n, int k)
+    {
+        vector<int> sol;
+        Tree tree = Tree();
+        for (int i = 0; i < n; i++) {
+            tree.addNode(arr[i]);
+        }
+        tree.printGreatest(k, sol, tree.root);
+        return sol;
+    }
+};
+ 
+// Driver code
+int main()
+{
+    int n = 5, k = 2;
+    int arr[] = { 12, 5, 787, 1, 23 };
+    Solution ob;
+    auto ans = ob.kLargest(arr, n, k);
+    cout << "Top " << k << " Elements: ";
+    for (auto x : ans) {
+        cout << x << " ";
+    }
+    cout << "\n";
+    return 0;
+}
+************************************************************
+K largest(or smallest) elements in an array using Binary Search:
+************************************************************
+// C++ code to implement the binary search approach
+#include <algorithm>
+#include <climits>
+#include <iostream>
+ 
+using namespace std;
+ 
+// Function to find the Kth largest element in the array
+// using binary search
+int findKthLargest(int arr[], int n, int k)
+{
+    int low = INT_MAX, high = INT_MIN;
+ 
+    // Find the minimum and maximum elements in the array
+    for (int i = 0; i < n; i++) {
+        low = min(low, arr[i]);
+        high = max(high, arr[i]);
+    }
+ 
+    // Perform binary search on the range of elements
+    // between low and high
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+        int count = 0;
+ 
+        // Count the number of elements greater than mid in
+        // the array
+        for (int i = 0; i < n; i++) {
+            if (arr[i] > mid) {
+                count++;
+            }
+        }
+ 
+        // If there are at least K elements greater than
+        // mid, search the right half
+        if (count >= k) {
+            low = mid + 1;
+        }
+        // Otherwise, search the left half
+        else {
+            high = mid - 1;
+        }
+    }
+ 
+    // Return the Kth largest element
+    return high;
+}
+ 
+// Function to print the K largest elements in the array
+void printKLargest(int arr[], int n, int k)
+{
+    // Find the Kth largest element
+    int kthLargest = findKthLargest(arr, n, k);
+ 
+    // Print the K largest elements in decreasing order
+    for (int i = 0; i < n; i++) {
+        if (arr[i] >= kthLargest) {
+            cout << arr[i] << " ";
+        }
+    }
+    cout << endl;
+}
+ 
+// Driver code
+int main()
+{
+    int arr[] = { 12, 5, 787, 1, 23 };
+    int n = sizeof(arr) / sizeof(arr[0]);
+    int k = 2;
+ 
+    cout << "K largest elements: ";
+    printKLargest(arr, n, k);
+ 
+    return 0;
+}
