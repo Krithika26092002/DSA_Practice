@@ -1,0 +1,45 @@
+/* A binary tree node structure
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+    
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+};
+ */
+
+class Solution{
+    public:
+    int height(Node* root) {
+        
+        if (root == nullptr)
+            return 0;
+        
+        int leftHeight = height(root->left);
+        int rightHeight = height(root->right);
+        
+        return max(leftHeight, rightHeight) + 1;
+    }
+    
+    bool isBalanced(Node* root) {
+        if (root == nullptr)
+            return true;
+        
+        int leftHeight = height(root->left);
+        int rightHeight = height(root->right);
+        
+        if (abs(leftHeight - rightHeight) <= 1) {
+            bool isLeftBalanced = isBalanced(root->left);
+            bool isRightBalanced = isBalanced(root->right);
+            
+            return isLeftBalanced && isRightBalanced;
+        }
+        
+        return false;
+    }
+};
