@@ -1,0 +1,91 @@
+Create an empty vector r to store the zigzag level order traversal.
+
+Check if the root of the binary tree is NULL. If it is, return the empty r vector.
+
+Create a queue q to perform a breadth-first search (BFS) traversal of the tree. Push the root node into the queue.
+
+Create a boolean variable ltr and initialize it as true. This variable is used to determine the direction of traversal (left to right or right to left) at each level.
+
+Start a while loop that continues until the queue is empty:
+
+Get the size of the current level by storing the size of the queue in the variable n.
+Create a temporary vector ans of size n to store the values of nodes at the current level.
+Iterate i from 0 to n - 1 to process each node at the current level:
+
+Remove the front node from the queue using q.front() and store it in the variable temp.
+Pop the front node from the queue using q.pop().
+Determine the index ind based on the value of ltr. If ltr is true, set ind as i. If ltr is false, set ind as n - i - 1. This determines the order in which the values are stored in ans.
+Store the value of temp in the ans vector at index ind.
+Check if the left child of temp is not NULL. If it's not NULL, push it into the queue q.
+
+Check if the right child of temp is not NULL. If it's not NULL, push it into the queue q.
+After processing all the nodes at the current level, reverse the order of the elements in the ans vector if ltr is false. This ensures the zigzag pattern.
+
+Append the elements of the ans vector to the r vector.
+
+Invert the value of ltr by negating it (ltr=!ltr), which changes the direction of traversal for the next level.
+
+Repeat the while loop until all levels of the tree have been processed.
+
+Return the r vector containing the zigzag level order traversal of the binary tree.
+***************************************************************************************************************************
+/*Structure of the node of the binary tree is as
+struct Node {
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+
+class Solution{
+    public:
+    //Function to store the zig zag order traversal of tree in a list.
+    vector <int> zigZagTraversal(Node* root)
+    {
+    
+    	queue<Node*>q;
+    	vector<int>r;
+    	if(root == NULL)
+    	    return r;
+    	
+
+    	q.push(root);
+    	bool ltr=true;
+    	
+    	while(!q.empty()){
+    	    int n=q.size();
+    	    	vector<int>ans(n);
+    
+    	    
+    	    for(int i=0;i<n;i++){
+    	        	    	
+    	    Node *temp=q.front();
+    	    q.pop();
+    	        int ind=ltr?i:n-i-1;
+    	        ans[ind]=temp->data;
+    	        
+    	        if(temp->left){
+    	           q.push(temp->left);
+    	        }
+    	        if(temp->right){
+    	            q.push(temp->right);
+    	        }
+    	        
+    	    }
+    	    
+    	    
+    	    
+    	 ltr=!ltr;   
+    	    
+    	    for(auto i:ans){
+    	        r.push_back(i);
+    	    }
+    	}
+    	return r;
+    }
+};
