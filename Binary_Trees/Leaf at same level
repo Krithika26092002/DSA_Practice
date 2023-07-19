@@ -1,0 +1,64 @@
+/* The structure of the binary tree is as follows
+struct Node
+{
+    int data;
+    Node* left;
+    Node* right;
+};
+*/
+
+class Solution{
+  public:
+    /*You are required to complete this method*/
+bool check(Node* root)
+    {
+        // If the tree is empty or has only one node, return true
+        if (root == nullptr || (root->left == nullptr && root->right == nullptr))
+            return true;
+
+        // Create an empty queue for BFS
+        queue<Node*> q;
+        q.push(root);
+
+        // Variable to track the level of the first encountered leaf node
+        int firstLeafLevel = -1;
+
+        // Variable to track the current level
+        int level = 0;
+
+        while (!q.empty())
+        {
+            int size = q.size();
+
+            // Process all nodes at the current level
+            for (int i = 0; i < size; i++)
+            {
+                Node* node = q.front();
+                q.pop();
+
+                // Check if the current node is a leaf node
+                if (node->left == nullptr && node->right == nullptr)
+                {
+                    // If it is the first encountered leaf node, set the level
+                    if (firstLeafLevel == -1)
+                        firstLeafLevel = level;
+                    // If the level doesn't match the level of the first leaf node, return false
+                    else if (level != firstLeafLevel)
+                        return false;
+                }
+
+                // Add the child nodes to the queue
+                if (node->left != nullptr)
+                    q.push(node->left);
+                if (node->right != nullptr)
+                    q.push(node->right);
+            }
+
+            // Increment the level
+            level++;
+        }
+
+        // All leaf nodes are at the same level
+        return true;
+    }
+};
