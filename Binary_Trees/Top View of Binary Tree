@@ -1,0 +1,68 @@
+This code is an implementation of the top view traversal of a binary tree. The top view of a binary tree is the set of nodes visible when looking at the tree from the top. It means, for each vertical level, only the node that is closest to the top in that vertical line is included in the top view.
+
+Here's an explanation of the code:
+
+We start by initializing an empty vector<int> called ans to store the result, which will be the top view of the binary tree.
+
+We use a queue called q to perform level order traversal of the binary tree. Each element in the queue is a pair consisting of a Node* and an int representing the line number. The line number will be used to identify the vertical level of the node.
+
+We also use a map<int, int> called mp to store the node data corresponding to each line number. This map will help us to keep track of the nodes visible from the top view for each vertical level.
+
+We perform a level order traversal of the binary tree using the queue. For each node, we check if its line number is already in the map (mp). If it is not, we add the node's data to the map. This ensures that only the topmost node on each vertical level is included in the top view.
+
+After processing the current node, we enqueue its left and right children (if they exist) with adjusted line numbers. The left child will have a line number one less than its parent's, and the right child will have a line number one more than its parent's.
+
+After the traversal is complete, we iterate over the mp map and push the node data (values) into the ans vector in ascending order of their line numbers.
+
+Finally, we return the ans vector, which contains the top view of the binary tree from left to right.
+****************************************************************************************************************************************************************************
+class Solution
+{
+    public:
+    //Function to return a list of nodes visible from the top view 
+    //from left to right in Binary Tree.
+    vector<int> topView(Node *root)
+    {
+        //Your code here
+        vector<int> ans;
+        queue<pair<Node*,int>> q;
+        q.push({root,0});
+        
+        map<int,int> mp;
+        
+        while(!q.empty())
+        {
+            auto it = q.front();
+            q.pop();
+            Node* temp = it.first;
+            int line = it.second;
+            if(mp.find(line)==mp.end())
+            mp[line] = temp->data;
+            
+            if(temp->left!=NULL)
+            {
+                q.push({temp->left,line-1});
+                
+            }
+            
+            if(temp->right!=NULL)
+            {
+                q.push({temp->right,line+1});
+                
+            }
+            
+           
+            
+        }
+        
+        for(auto it : mp)
+        {
+             ans.push_back(it.second);
+             
+        }
+        
+        return ans;
+        
+    }
+
+};
