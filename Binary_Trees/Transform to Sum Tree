@@ -1,0 +1,30 @@
+//User function template for C++
+
+/* A binary tree node
+struct Node
+{
+    int data;
+    Node* left, * right;
+}; */
+
+class Solution {
+  public:
+    // Convert a given tree to a tree where every node contains sum of values of
+    // nodes in left and right subtrees in the original tree
+    int toSumTreeHelper(Node* node) {
+        if (node == nullptr)
+            return 0;
+        
+        int leftSum = toSumTreeHelper(node->left);
+        int rightSum = toSumTreeHelper(node->right);
+        
+        int currentSum = node->data + leftSum + rightSum;
+        
+        node->data = leftSum + rightSum;
+        
+        return currentSum;
+    }
+    void toSumTree(Node* node) {
+        toSumTreeHelper(node);
+    }
+};
