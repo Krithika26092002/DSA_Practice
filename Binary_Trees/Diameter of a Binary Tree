@@ -1,0 +1,35 @@
+/* Tree node structure  used in the program
+
+struct Node
+{
+    int data;
+    struct Node* left;
+    struct Node* right;
+
+    Node(int x){
+        data = x;
+        left = right = NULL;
+    }
+}; */
+class Solution {
+  public:
+  
+    int height(Node* root){
+        // code here 
+        if(root == NULL)
+        {
+            return 0;
+        }
+        int leftHeight = height(root->left);
+        int rightHeight = height(root->right);
+        //ans = max(ans, leftHeight+rightHeight);
+        return max(leftHeight, rightHeight)+1;
+    }
+    // Function to return the diameter of a Binary Tree.
+    int diameter(Node* root) {
+        // Your code here
+        //int ans = 0;
+        int ans = height(root);
+        return ans+1;
+    }
+};
