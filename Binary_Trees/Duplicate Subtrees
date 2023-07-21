@@ -1,0 +1,30 @@
+Structure of the node of the binary tree is as
+struct Node {
+	int data;
+	struct Node* left, *right;
+};
+*/
+// you are required to complete this function
+// the function and return an vector of Node
+// which contains all the duplicate sub-tree
+string sol(Node* root, vector<Node*> &v, map<string,int> &m)
+{
+    if(root==NULL) return "";
+    string left=sol(root->left,v,m);
+    string right=sol(root->right,v,m);
+    string ans=to_string(root->data)+","+left+","+right;
+    if(m[ans]==1)
+    v.push_back(root);
+    m[ans]++;
+    return ans;
+    
+}
+vector<Node*> printAllDups(Node* root)
+{
+    // Code here
+    vector<Node*>v;
+    map<string,int> m;
+    sol(root,v,m);
+    return v;
+    
+}
