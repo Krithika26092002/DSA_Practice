@@ -1,0 +1,57 @@
+struct Node {
+    int data;
+    Node *left;
+    Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+};
+*/
+
+// return the Kth largest element in the given BST rooted at 'root'
+class Solution
+{
+    public:
+    void inOrder(Node* root,vector<int> &ans){
+        if(root==NULL) return ;
+        inOrder(root->left,ans);
+        ans.push_back(root->data);
+        inOrder(root->right,ans);
+    }
+    
+    int kthLargest(Node *root, int K)
+    {
+        //Your code goes here
+        vector<int> ans;
+        inOrder(root,ans);
+        sort(ans.begin(),ans.end());
+        return ans[K-1];
+    }
+};
+**************************************************************************
+This is my solution. According to me it seems fine but it gives an error for this 78 69 80 4 72 79. Where the ans somehow is supposed to be 69 but I got 79.(Tho I think 79 is correct)
+                                                                                   5
+**************************************************************************
+The apparently correct solution
+// return the Kth largest element in the given BST rooted at 'root'
+class Solution
+{
+    public:
+    vector<int> v;
+    void lvl(Node *root){
+        if(root==NULL)
+        return;
+        lvl(root->left);
+        v.push_back(root->data);
+        lvl(root->right);
+    }
+    int kthLargest(Node *root, int K)
+    {
+        lvl(root);
+     int size=v.size();
+     return v[size-K];
+    }
+};
+(And it works)
