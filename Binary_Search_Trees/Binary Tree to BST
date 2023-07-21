@@ -1,0 +1,41 @@
+/* The Node structure is
+struct Node
+{
+    int data;
+    struct Node *left;
+    struct Node *right;
+
+    Node(int val) {
+        data = val;
+        left = right = NULL;
+    }
+}; 
+*/
+
+class Solution{
+  public:
+    // The given root is the root of the Binary Tree
+    // Return the root of the generated BST
+    void inOrder(Node* root,vector<int> &ans){
+        if(root==NULL) return ;
+        inOrder(root->left,ans);
+        ans.push_back(root->data);
+        inOrder(root->right,ans);
+    }
+    void change(Node* root,vector<int> &ans,int &i){
+        if(root==NULL) return ;
+        change(root->left,ans,i);
+        root->data=ans[i++];
+        change(root->right,ans,i);
+    }
+    Node *binaryTreeToBST (Node *root)
+    {
+        //Your code goes here
+        vector<int> ans;
+        inOrder(root,ans);
+        sort(ans.begin(),ans.end());
+        int i=0;
+        change(root,ans,i);
+        return root;
+    }
+};
