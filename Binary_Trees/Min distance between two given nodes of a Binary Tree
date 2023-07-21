@@ -1,0 +1,57 @@
+class Solution{
+    public:
+    /* Should return minimum distance between a and b
+    in a tree with given root*/
+    Node* Lca(Node* root, int a, int b)
+    {
+        // Base case
+        if(root == NULL) return NULL;
+        
+        if(root->data == a || root->data == b)
+            return root;
+        
+        Node* leftAns = Lca(root->left, a, b);
+        Node* rightAns = Lca(root->right, a, b);
+        
+        if(leftAns == NULL && rightAns == NULL)
+            return NULL;
+        else if(leftAns != NULL && rightAns != NULL)
+            return root;
+        else if(leftAns)
+            return leftAns;
+        else 
+            return rightAns;
+    }
+    
+    pair<bool, int> findDistBwtRootAndNode(Node* root, int a)
+    {
+        // Base case
+        if(root == NULL)
+            return {false, -1};
+        
+        if(root->data == a)
+            return {true, 0};
+        
+        auto leftAns = findDistBwtRootAndNode(root->left, a);
+        auto rightAns = findDistBwtRootAndNode(root->right, a);
+        
+        if(!leftAns.first && !rightAns.first)
+            return {false, -1};
+        else if(leftAns.first)
+            return {true, 1 + leftAns.second};
+        else 
+            return {true, 1 + rightAns.second};
+    }
+    
+    int findDist(Node* root, int a, int b) {
+        Node* lca = Lca(root, a, b);
+        int ans = 0;
+        
+        if(lca->data == a)
+            return findDistBwtRootAndNode(lca, b).second;
+        else if(lca->data == b)
+            return findDistBwtRootAndNode(lca, a).second;
+        else 
+            return findDistBwtRootAndNode(lca, a).second + findDistBwtRootAndNode(lca, b).second;
+    }
+};
