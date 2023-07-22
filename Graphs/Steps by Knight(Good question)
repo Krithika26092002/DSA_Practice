@@ -1,0 +1,46 @@
+vector<vector<int>> moves{{1, 2}, {1, -2}, {-1, 2}, {-1, -2}, {2, 1}, {2, -1}, {-2, 1}, {-2, -1}};
+
+class Solution 
+{
+    public:
+    
+	int minStepToReachTarget(vector<int>&KnightPos,vector<int>&TargetPos,int N)
+	{
+	    vector<vector<bool>> visited(N, vector<bool>(N, false));
+	    KnightPos[0] -= 1; //To convert it to 0-indexed values
+	    KnightPos[1] -= 1;
+	    TargetPos[0] -= 1;
+	    TargetPos[1] -= 1;
+	    
+	    queue<vector<int>> q;
+	    q.push(KnightPos);
+	    visited[KnightPos[0]][KnightPos[1]] = true;
+	    
+	    int ans = 0;
+	    while (!q.empty()) {
+	        int size = q.size();
+	        for (int i=0; i<size; i++) {
+	            auto front = q.front();
+    	        q.pop();
+    	        
+    	        if (front[0] == TargetPos[0] && front[1] == TargetPos[1]) {
+    	            return ans;
+    	        }
+
+    	        for (auto move: moves) {
+    	            vector<int> next_pos(2);
+    	            next_pos[0] = front[0] + move[0];
+    	            next_pos[1] = front[1] + move[1];
+    	            
+    	            if (next_pos[0] >= 0 && next_pos[0] < N && next_pos[1] >= 0 && next_pos[1] < N && !visited[next_pos[0]][next_pos[1]]) {
+    	                q.push(next_pos);
+    	                visited[next_pos[0]][next_pos[1]] = true;
+    	            }
+    	        }
+	        }
+	        ans += 1;
+	    }
+	    
+	    return -1;
+	}
+};
