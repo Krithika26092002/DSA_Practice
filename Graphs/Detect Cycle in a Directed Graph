@@ -1,0 +1,198 @@
+// A C++ Program to detect cycle in a graph
+#include <bits/stdc++.h>
+using namespace std;
+
+class Graph {
+	// No. of vertices
+	int V;
+
+	// Pointer to an array containing adjacency lists
+	list<int>* adj;
+
+	// Used by isCyclic()
+	bool isCyclicUtil(int v, bool visited[], bool* rs);
+
+public:
+	Graph(int V);
+	void addEdge(int v, int w);
+	bool isCyclic();
+};
+
+Graph::Graph(int V)
+{
+	this->V = V;
+	adj = new list<int>[V];
+}
+
+void Graph::addEdge(int v, int w)
+{
+	// Add w to v’s list.
+	adj[v].push_back(w);
+}
+
+// DFS function to find if a cycle exists
+bool Graph::isCyclicUtil(int v, bool visited[],
+						bool* recStack)
+{
+	if (visited[v] == false) {
+		// Mark the current node as visited
+		// and part of recursion stack
+		visited[v] = true;
+		recStack[v] = true;
+
+		// Recur for all the vertices adjacent to this
+		// vertex
+		list<int>::iterator i;
+		for (i = adj[v].begin(); i != adj[v].end(); ++i) {
+			if (!visited[*i]
+				&& isCyclicUtil(*i, visited, recStack))
+				return true;
+			else if (recStack[*i])
+				return true;
+		}
+	}
+
+	// Remove the vertex from recursion stack
+	recStack[v] = false;
+	return false;
+}
+
+// Returns true if the graph contains a cycle, else false
+bool Graph::isCyclic()
+{
+	// Mark all the vertices as not visited
+	// and not part of recursion stack
+	bool* visited = new bool[V];
+	bool* recStack = new bool[V];
+	for (int i = 0; i < V; i++) {
+		visited[i] = false;
+		recStack[i] = false;
+	}
+
+	// Call the recursive helper function
+	// to detect cycle in different DFS trees
+	for (int i = 0; i < V; i++)
+		if (!visited[i]
+			&& isCyclicUtil(i, visited, recStack))
+			return true;
+
+	return false;
+}
+
+// Driver code
+int main()
+{
+	// Create a graph
+	Graph g(4);
+	g.addEdge(0, 1);
+	g.addEdge(0, 2);
+	g.addEdge(1, 2);
+	g.addEdge(2, 0);
+	g.addEdge(2, 3);
+	g.addEdge(3, 3);
+
+	// Function call
+	if (g.isCyclic())
+		cout << "Graph contains cycle";
+	else
+		cout << "Graph doesn't contain cycle";
+	return 0;
+}
+********************************************************************************************
+Another Approach:
+
+Using Kahn’s Algorithm:
+********************************************************************************************
+For arranging the vertices of a directed acyclic graph (DAG) such that for every directed edge from vertex A to vertex B, A occurs before B in the ordering, Kahn’s algorithm is a well-known approach for topological sorting.
+
+The first step of Kahn’s technique is to identify all the vertices that have no dependencies and have zero incoming edges. These vertices are then taken out of the graph and added to the output list. The remaining vertices are subjected to the same procedure, with each iteration eliminating the vertices with no incoming edges until all vertices have been handled.
+
+The algorithm operates on the premise that a vertex can be visited securely and added to the output list if it doesn’t have any incoming edges. The problem is transformed into a smaller DAG by eliminating this vertex, which also eliminates all of its outgoing edges. Each vertex’s incoming edges are tracked by the algorithm, which updates them when vertices are dropped.
+
+The algorithm is explained in detail below:
+
+Calculate the in-degree (number of incoming edges) for each vertex in the DAG and set the starting value of the visited nodes count to 0.
+Select all of the vertices with in-degree values of 0, then enqueue them all.
+Add one more visited node to the count after removing a vertex from the queue (Dequeue operation).
+For each of its neighbouring nodes or vertices, reduce in-degree by 1.
+Add a node or vertex to the queue if the in-degree of any nearby nodes or vertices is lowered to zero.
+Up until the queue is empty, repeat step 3.
+The topological sort is not possible for the provided graph if the number of visited nodes is not equal to the number of graph vertices.
+****************************************************************************************************************************************
+#include <iostream>
+#include <vector>
+#include <queue>
+
+using namespace std;
+
+class Graph {
+private:
+	int V; // number of vertices
+	vector<vector<int>> adj; // adjacency list
+
+public:
+	Graph(int V) {
+		this->V = V;
+		adj.resize(V);
+	}
+
+	void addEdge(int v, int w) {
+		adj[v].push_back(w);
+	}
+
+	bool isCyclic() {
+		vector<int> inDegree(V, 0); // stores in-degree of each vertex
+		queue<int> q; // queue to store vertices with 0 in-degree
+		int visited = 0; // count of visited vertices
+
+		// calculate in-degree of each vertex
+		for (int u = 0; u < V; u++) {
+			for (auto v : adj[u]) {
+				inDegree[v]++;
+			}
+		}
+
+		// enqueue vertices with 0 in-degree
+		for (int u = 0; u < V; u++) {
+			if (inDegree[u] == 0) {
+				q.push(u);
+			}
+		}
+
+		// BFS traversal
+		while (!q.empty()) {
+			int u = q.front();
+			q.pop();
+			visited++;
+
+			// reduce in-degree of adjacent vertices
+			for (auto v : adj[u]) {
+				inDegree[v]--;
+				// if in-degree becomes 0, enqueue the vertex
+				if (inDegree[v] == 0) {
+					q.push(v);
+				}
+			}
+		}
+
+		return visited != V; // if not all vertices are visited, there is a cycle
+	}
+};
+
+int main() {
+	Graph g(6);
+	g.addEdge(0, 1);
+	g.addEdge(0, 2);
+	g.addEdge(1, 3);
+	g.addEdge(4, 1);
+	g.addEdge(4, 5);
+	g.addEdge(5, 3);
+
+	if (g.isCyclic()) {
+		cout << "Graph contains cycle." << endl;
+	} else {
+		cout << "Graph does not contain cycle." << endl;
+	}
+
+	return 0;
+}
