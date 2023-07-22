@@ -1,0 +1,49 @@
+class Solution {
+    
+    private:
+    
+    bool detect(int src, vector<int> adj[], int vis[])
+    {
+        vis[src]=1; //mark the source as visited in the array
+        queue<pair<int,int>> q;
+        q.push({src,-1}); //push the source node and the parent of this node(-1 in this case) into the queue
+       
+        while(!q.empty())
+        {
+            int node= q.front().first;
+            int parent= q.front().second;
+            q.pop();
+            
+            for(auto it: adj[node]) //if the adjacent nodes are not visited previously we mark it as visited and then push it into the queue along with its parent
+            {
+                if(!vis[it])
+                {
+                    vis[it]=1; 
+                    q.push({it,node});
+                }
+                else if(parent!=it) //someone already reach the node that was supposed t0 come from a specific parent
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+  public:
+    // Function to detect cycle in an undirected graph.
+    bool isCycle(int V, vector<int> adj[]) {
+        int vis[V]={0};
+        
+        for(int i=0; i<V; i++) //this is for non connected components graphs
+        {
+            if(!vis[i])
+            {
+                if(detect(i, adj, vis))
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
