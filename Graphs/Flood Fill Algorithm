@@ -1,3 +1,6 @@
+To further understand 
+https://www.youtube.com/watch?v=RwozX--B_Xs
+****************************************************************
 class Solution {
 public:
     void floodFillDFS(int row, int col, int initialColor, int newColor, vector<vector<int>>& image) {
