@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int findCheapestPrice(int n, vector<vector<int>>& flights, int src, int dst, int k) {
+        vector<vector<int>> dis(n, vector<int>(k + 2, 1e9));
+        vector<vector<pair<int, int>>> adjList(n);
+        for (const auto& flight : flights) {
+            adjList[flight[0]].push_back({flight[1], flight[2]});
+        }
+
+        dis[src][0] = 0;
+        set<vector<int>> s;
+        s.insert({0, src, 0});
+
+        while (!s.empty()) {
+            vector<int> v = *(s.begin());
+            s.erase(s.begin());
+            int cost = v[0], sr = v[1], stops = v[2];
+
+            if (sr == dst) {
+                return cost;
+            }
+
+            if (stops <= k) {
+                for (const auto& neighbor : adjList[sr]) {
+                    int node = neighbor.first, c = neighbor.second;
+                    if (dis[node][stops + 1] > cost + c) {
+                        dis[node][stops + 1] = cost + c;
+                        s.insert({dis[node][stops + 1], node, stops + 1});
+                    }
+                }
+            }
+        }
+
+        int result = 1e9;
+        for(int i = 0; i <= k + 1; i++) {
+            result = min(result, dis[dst][i]);
+        }
+        
+        return result == 1e9 ? -1 : result;
+    }
+};
