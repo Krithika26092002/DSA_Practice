@@ -1,0 +1,48 @@
+Graph coloring problem is to assign colors to certain elements of a graph subject to certain constraints. 
+Vertex coloring is the most common graph coloring problem. The problem is, given m colors, find a way of coloring the vertices of a graph such that no two adjacent vertices are colored using same color. The other graph coloring problems like Edge Coloring (No vertex is incident to two edges of same color) and Face Coloring (Geographical Map Coloring) can be transformed into vertex coloring. 
+
+Algorithm for graph coloring 
+Algorithm GRAPH COLORING(G, COLOR, i)
+Description: Solve the graph coloring problem using backtracking 
+//Input: Graph G with n vertices, list of colors, initial vertex i
+COLOR(1...n] is the array of n different colors
+//Output: Colored graph with minimum color
+if CHECK_VERTEX(i)==1 then
+if i == N then
+
+print COLOR[1...n]
+else
+j <- 1
+while (S<=M) do
+COLOR(i+1) <- j
+j +j <- 1
+end
+
+end
+end
+
+Function CHECK_VERTEX(i)
+for j <- 1to i -1 do
+if Adjacent(i,j) then
+if COLOR(i)==COLOR(j) then
+return 0
+end
+end
+end
+return 1
+
+Chromatic Number: The smallest number of colors needed to color a graph G is called its chromatic number. For example, the following can be colored minimum 2 colors. 
+
+Chromatic number of this graph is 2 because  in this above diagram we can use to color red and green .
+so chromatic number of this graph is 2 and is denoted x(G)  ,means x(G)=2 . 
+Chromatic number define as the least no of colors needed for coloring the graph .
+and types of chromatic number are:
+1) Cycle graph
+2) planar graphs
+3) Complete graphs
+4) Bipartite Graphs:
+5) Trees
+ The problem to find chromatic number of a given graph is NP Complete.
+
+The chromatic number is denoted by X(G). Finding the chromatic number for the graph is NP-complete problem. Graph coloring problem is both, a decision problem as well as an optimization problem. A decision problem is stated as, “With given M colors and graph G, whether a such color scheme is possible or not?”.
+The optimization problem is stated as, “Given M colors and graph G, find the minimum number of colors required for graph coloring.” Graph coloring problem is a very interesting problem of graph theory and it has many diverse applications.
