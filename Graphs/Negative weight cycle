@@ -1,3 +1,40 @@
+This code is a C++ function that checks whether a given graph contains a negative-weight cycle. The input graph is represented as a vector of vectors, where each inner vector represents an edge with three integers: the source vertex (u), the destination vertex (v), and the weight of the edge (wt).
+
+The function uses the Bellman-Ford algorithm to detect negative-weight cycles in the graph. Here's a step-by-step explanation of the code:
+
+The function isNegativeWeightCycle takes two arguments: n, the number of vertices in the graph, and edges, the vector of vectors representing the edges.
+
+It first initializes a distance vector dist, which stores the shortest distance from the source vertex to each vertex in the graph. The initial values are set to a very large number (1e8) to represent infinity. The source vertex (edges[0][0]) is set to 0 since the distance from the source vertex to itself is 0.
+
+The function then runs the Bellman-Ford algorithm for n-1 iterations (where n is the number of vertices). In each iteration, it relaxes all the edges in the graph. Relaxing an edge means updating the distance to the destination vertex if a shorter path is found through the current source vertex. The dist vector is updated with the minimum distance found.
+
+After n-1 iterations, the dist vector contains the shortest distances from the source vertex to all other vertices in the graph (if there are no negative-weight cycles). If there are negative-weight cycles in the graph, the distances may further decrease in the next iteration.
+
+To check for negative-weight cycles, the function performs one more iteration and checks for any updates in the dist vector. If any update is found, it means that a negative-weight cycle exists in the graph.
+
+If a negative-weight cycle is detected, the function returns 1 (indicating true), indicating that the graph contains a negative-weight cycle.
+
+If no negative-weight cycle is found after the additional iteration, the function returns 0 (indicating false), indicating that the graph does not contain a negative-weight cycle.
+************************************************************************************************************************************************************
+This code is a C++ function that checks whether a given graph contains a negative-weight cycle. The input graph is represented as a vector of vectors, where each inner vector represents an edge with three integers: the source vertex (u), the destination vertex (v), and the weight of the edge (wt).
+
+The function uses the Bellman-Ford algorithm to detect negative-weight cycles in the graph. Here's a step-by-step explanation of the code:
+
+The function isNegativeWeightCycle takes two arguments: n, the number of vertices in the graph, and edges, the vector of vectors representing the edges.
+
+It first initializes a distance vector dist, which stores the shortest distance from the source vertex to each vertex in the graph. The initial values are set to a very large number (1e8) to represent infinity. The source vertex (edges[0][0]) is set to 0 since the distance from the source vertex to itself is 0.
+
+The function then runs the Bellman-Ford algorithm for n-1 iterations (where n is the number of vertices). In each iteration, it relaxes all the edges in the graph. Relaxing an edge means updating the distance to the destination vertex if a shorter path is found through the current source vertex. The dist vector is updated with the minimum distance found.
+
+After n-1 iterations, the dist vector contains the shortest distances from the source vertex to all other vertices in the graph (if there are no negative-weight cycles). If there are negative-weight cycles in the graph, the distances may further decrease in the next iteration.
+
+To check for negative-weight cycles, the function performs one more iteration and checks for any updates in the dist vector. If any update is found, it means that a negative-weight cycle exists in the graph.
+
+If a negative-weight cycle is detected, the function returns 1 (indicating true), indicating that the graph contains a negative-weight cycle.
+
+If no negative-weight cycle is found after the additional iteration, the function returns 0 (indicating false), indicating that the graph does not contain a negative-weight cycle.
+********************************************************************************************************************************************************************
+
 class Solution {
 public:
 	int isNegativeWeightCycle(int n, vector<vector<int>>edges){
