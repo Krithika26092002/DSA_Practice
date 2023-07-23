@@ -1,0 +1,61 @@
+The Floyd-Warshall algorithm is a dynamic programming algorithm used to find the shortest paths between all pairs of vertices in a weighted graph. Unlike the Dijkstra's algorithm and Bellman-Ford algorithm, which find the shortest path from a single source vertex to all other vertices, the Floyd-Warshall algorithm computes the shortest paths between all possible pairs of vertices in the graph.
+
+The algorithm is particularly useful when you need to find the shortest distances between all pairs of vertices in a dense graph (i.e., a graph with many edges) or when the graph contains negative edge weights. It can handle graphs with both positive and negative edge weights, but it cannot handle graphs with negative-weight cycles.
+
+Here's how the Floyd-Warshall algorithm works:
+
+Initialize a 2D array dist of size V x V, where V is the number of vertices in the graph. The entry dist[i][j] represents the shortest distance from vertex i to vertex j.
+
+Set the initial values of dist[i][j] as follows:
+
+If i is equal to j, set dist[i][j] to 0 (distance from a vertex to itself is 0).
+If there is an edge from vertex i to vertex j with weight w, set dist[i][j] to w.
+If there is no direct edge from vertex i to vertex j, set dist[i][j] to infinity.
+Perform V iterations (where V is the number of vertices). In each iteration, consider vertex k as an intermediate vertex and update the dist[i][j] values for all pairs (i, j) such that the shortest path from vertex i to vertex j passes through vertex k. The update rule is: dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]).
+
+After V iterations, the dist array contains the shortest distances between all pairs of vertices in the graph.
+***********************************************************************************************************************************************************************
+
+class Solution {
+  public:
+	void shortest_distance(vector<vector<int>>&matrix){
+	    // Code here
+	    int n=matrix.size();
+	    for(int i=0;i<n;i++)
+	    {
+	        for(int j=0;j<n;j++)
+	        {
+	            if(matrix[i][j]==-1)
+	            {
+	                matrix[i][j]=1e8;
+	            }
+	        }
+	    }
+	    
+	    for(int k=0;k<n;k++)
+	    {
+	        for(int i=0;i<n;i++)
+	        {
+	            for(int j=0;j<n;j++)
+	            {
+	            
+	                if(matrix[i][j]>matrix[i][k]+matrix[k][j])
+	                {
+	                    matrix[i][j]=matrix[i][k]+matrix[k][j];
+	                }
+	            
+	            }
+	        }
+	    }
+	    for(int i=0;i<n;i++)
+	    {
+	        for(int j=0;j<n;j++)
+	        {
+	            if(matrix[i][j]==1e8)
+	            {
+	                matrix[i][j]=-1;
+	            }
+	        }
+	    }
+	}
+};
