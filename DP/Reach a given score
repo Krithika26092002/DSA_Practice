@@ -1,0 +1,21 @@
+long long int f(int i,int k,int arr[])
+{
+    if(i==3)
+    return 0;
+    if(k==0)
+    return 1;
+    int nottake=f(i+1,k,arr);
+    
+    int take=0;
+    if(arr[i]<=k)
+    take=f(i,k-arr[i],arr);
+    
+    return take+nottake;
+}
+
+long long int count(long long int k)
+{
+// 	vector<int> ;
+    int arr[3]={3,5,10};
+    return f(0,k,arr);
+}
