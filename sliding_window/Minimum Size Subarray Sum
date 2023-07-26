@@ -1,0 +1,73 @@
+**************** This is my code *********************************
+class Solution {
+public:
+    int helper(int target, vector<int>& nums, int i, int ans){
+        int sum = 0;
+        int count = 0;
+        int k = i;
+        while (i< nums.size()){
+            sum += nums[i];
+            count++;
+            if(sum == target){
+                ans = min(count,ans);
+                int i = k;
+                count = helper(target, nums, i+1, ans);
+                return count;
+            }
+            else if(sum > target){
+                i = k;
+                count = helper(target, nums, i+1, ans);
+                return count;
+            }
+            i++;
+        }
+        return ans;   
+    }
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int sum = 0;
+        int count = 0;
+        int ans = INT_MAX;
+        for(int i=0;i<nums.size();++i)
+        {
+            sum += nums[i];
+            count++;
+            if(sum == target){
+                ans = min(count,ans);
+                int i = 0;
+                count = helper(target, nums, i+1, ans);
+                return count;
+
+            }
+            else if(sum > target){
+                int i = 0;
+                count = helper(target, nums, i+1, ans);
+                return count;
+            }
+        }
+            return 0;
+    }
+};
+
+********************* This is the right one ********************************
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        int i=0;
+        int j=0;
+        int sum=0;
+        int mn=INT_MAX;
+        while(j<nums.size()){
+            sum+=nums[j];
+            while(sum>=target){
+                sum-=nums[i];
+                mn=min(j-i+1,mn);
+                i++;
+            }
+            j++;
+        }
+        if(mn==INT_MAX){
+            return 0;
+        }
+        return mn;
+    }
+};
