@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool isValidSudoku(vector<vector<char>>& board) {
+    // we will validating for every row ,cloumn and every boxes also if they having any duplicates integer present we  directly return false
+       unordered_set< string> ust;// create set to store values
+       for( int i = 0 ; i <9 ; i ++){//traversing rows
+           for(int j = 0 ; j < 9 ; j++){// traverse column
+               if(board[i][j] == '.') continue;// if find vacent or dot we continue
+               
+               string row = to_string(board[i][j]) + "ROW" + to_string(i);
+
+               string col = to_string(board[i][j]) + "COL" + to_string(j);
+
+               string box = to_string(board[i][j]) + "BOX" + to_string(i/3) + to_string(j/3);
+
+    if(ust.find(row) != ust.end() || ust.find(col) != ust.end() || ust.find(box)!= ust.end()){// if we find duplicates return false 
+        return false;
+    }
+        ust.insert(row);
+        ust.insert(col);// if not find duplicates store in set 
+        ust.insert(box);
+        }
+       }
+       return true;// if they unique return true
+
+
+    } 
+};
