@@ -1,0 +1,174 @@
+// C++ program to count all duplicates
+// from string using hashing
+#include <iostream>
+using namespace std;
+# define NO_OF_CHARS 256
+
+class gfg
+{
+	public :
+	
+	/* Fills count array with
+	frequency of characters */
+	void fillCharCounts(char *str, int *count)
+	{
+		int i;
+		for (i = 0; *(str + i); i++)
+		count[*(str + i)]++;
+	}
+
+	/* Print duplicates present
+	in the passed string */
+	void printDups(char *str)
+	{
+		
+		// Create an array of size 256 and fill
+		// count of every character in it
+		int *count = (int *)calloc(NO_OF_CHARS,
+									sizeof(int));
+		fillCharCounts(str, count);
+
+		// Print characters having count more than 0
+		int i;
+		for (i = 0; i < NO_OF_CHARS; i++)
+		if(count[i] > 1)
+			printf("%c, count = %d \n", i, count[i]);
+
+		free(count);
+	}
+};
+
+/* Driver code*/
+int main()
+{
+	gfg g ;
+	char str[] = "test string";
+	g.printDups(str);
+	//getchar();
+	return 0;
+}
+********************************************************
+Method 2: Using Maps
+
+Approach: The approach is the same as discussed in Method 1, but, using a map to store the count.
+********************************************************
+// C++ program to count all duplicates
+// from string using maps
+#include <bits/stdc++.h>
+using namespace std;
+void printDups(string str)
+{
+	map<char, int> count;
+	for (int i = 0; i < str.length(); i++) {
+		count[str[i]]++;
+	}
+
+	for (auto it : count) {
+		if (it.second > 1)
+			cout << it.first << ", count = " << it.second
+				<< "\n";
+	}
+}
+/* Driver code*/
+int main()
+{
+	string str = "test string";
+	printDups(str);
+	return 0;
+}
+*********************************************************
+Using Sorting: The approach is very simple we know that if we sort the string then all duplicates will come together in the string .
+then we will traverse the string from starting index to ending index and check if neighbour charater is same then we will increment the count by 1.
+the total space complexity can be reduced by this method.
+Below is the implementation for this approach
+*********************************************************
+//C++ code to implement the above approach
+#include <iostream>
+#include <string>
+#include <algorithm>
+
+using namespace std;
+void printDuplicates(string str){
+		int len = str.length();
+	
+	// Sorting the string
+	sort(str.begin(), str.end());
+	
+	// Loop through the sorted string to find duplicates
+	for(int i = 0; i < len; i++) {
+		int count = 1;
+		
+		// Counting the occurrences of each character
+		while(i < len-1 && str[i] == str[i+1]) {
+			count++;
+			i++;
+		}
+		
+		// Printing the duplicate character and its count
+		if(count > 1) {
+			cout << str[i] << ", count = " << count << endl;
+		}
+	}
+	
+}
+int main() {
+	string str = "test string";
+	printDuplicates(str);
+	return 0;
+}
+*****************************************************
+Using bit manipulation: we can also solve this problem using bit manipulation and it will reduce overall complexity of the code 
+Note: Below code will work only on lower case characters this code  can be extended to handle both uppercase and lowercase characters.
+To support both uppercase and lowercase characters, we need to allocate a bit vector of size 52 (26 for lowercase letters and 26 for uppercase letters)
+Below is the implementation of the above approach.
+*****************************************************
+#include <cstring>
+#include <iostream>
+
+using namespace std;
+
+const int MAX_CHAR = 26; // Maximum number of characters
+
+void printDuplicates(string str)
+{
+	int bitVector = 0; // Initialize the bit vector to zero
+	int charCounts[MAX_CHAR]
+		= { 0 }; // Initialize an array to keep track of
+				// character counts
+
+	for (int i = 0; i < str.length(); i++) {
+		int bitIndex
+			= str[i] - 'a'; // Get the bit index for the
+							// current character
+		if ((bitVector & (1 << bitIndex))
+			== 0) { // Check if the bit is already set
+			bitVector |= (1 << bitIndex); // Set the bit
+		}
+		else {
+			charCounts[bitIndex]++; // Increment the count
+									// for the duplicate
+									// character
+		}
+	}
+
+	for (int i = 0; i < MAX_CHAR; i++) {
+		if (charCounts[i] > 0) {
+			char c
+				= i
+				+ 'a'; // Get the character corresponding
+						// to the current bit index
+			cout << c << ", count = " << charCounts[i] + 1
+				<< endl; // Print the duplicate character
+						// and its count
+		}
+	}
+}
+
+int main()
+{
+	string str = "test string";
+
+	printDuplicates(str);
+
+	return 0;
+}
