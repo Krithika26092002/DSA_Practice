@@ -1,0 +1,63 @@
+Arrays
+// Syntax for declaring and initializing an array
+datatype arrayName[arraySize] = {element1, element2, ..., elementN};
+
+Vectors
+#include <vector>
+
+// Syntax for declaring and initializing a vector
+std::vector<datatype> vectorName = {element1, element2, ..., elementN};
+
+Linked lists
+struct Node {
+    datatype data;
+    Node* next;
+};
+
+// Creating a new node and linking it in the list
+Node* newNode = new Node;
+newNode->data = value;
+newNode->next = nullptr;
+
+Stacks
+#include <stack>
+
+// Syntax for creating a stack
+std::stack<datatype> myStack;
+
+Queues
+#include <queue>
+
+// Syntax for creating a queue
+std::queue<datatype> myQueue;
+
+Sets
+#include <set>
+
+// Syntax for creating a set
+std::set<datatype> mySet;
+
+Maps
+#include <map>
+
+// Syntax for creating a map
+std::map<keyType, valueType> myMap;
+
+Hash tables
+#include <unordered_map>
+
+// Syntax for creating an unordered_map
+std::unordered_map<keyType, valueType> myHashMap;
+
+Trees
+struct TreeNode {
+    datatype data;
+    TreeNode* left;
+    TreeNode* right;
+};
+
+// Creating a new tree node and linking it in the tree
+TreeNode* newNode = new TreeNode;
+newNode->data = value;
+newNode->left = nullptr;
+newNode->right = nullptr;
