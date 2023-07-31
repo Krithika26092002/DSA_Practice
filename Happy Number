@@ -1,0 +1,24 @@
+class Solution {
+private:
+    int count = 0; // Initialize count as a private member variable
+
+public:
+    bool isHappy(int n) {
+        int sum = 0;
+        while (n > 0) {
+        int digit = n % 10;     // Extract the last digit of the number
+        int square = digit * digit;  // Calculate the square of the digit
+        sum += square;            // Add the square to the sum
+        n /= 10;                // Remove the last digit from the number
+    }
+        if (sum == 1) {
+            return true;
+        } else if (count < 10) {
+            count++;
+            return isHappy(sum);
+        }
+        else{
+            return false;
+        }
+    }
+};
