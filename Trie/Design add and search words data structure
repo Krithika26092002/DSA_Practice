@@ -1,0 +1,74 @@
+ class TrieNode{
+public:
+    char ch;
+    TrieNode* child[26];
+    bool isTerminal;
+
+    TrieNode(char c){
+        ch = c;
+        for(int i=0;i<26;i++){
+            child[i] = NULL;
+        }
+
+        isTerminal = false;
+    }    
+};
+
+class WordDictionary {
+public:
+    TrieNode* root;
+
+    WordDictionary() {
+        root = new TrieNode('#');
+    }
+
+    void addWordUtil(TrieNode* ptr,string word){
+        if(word.length() == 0){
+            ptr->isTerminal = true;
+            return;
+        }
+
+        if(ptr->child[word[0]-'a'] == NULL){
+            ptr->child[word[0]-'a'] = new TrieNode(word[0]);
+            addWordUtil(ptr->child[word[0]-'a'], word.substr(1));
+        }
+        else{
+            addWordUtil(ptr->child[word[0]-'a'], word.substr(1));
+        }
+    }
+    
+    void addWord(string word) {
+        addWordUtil(root,word);
+    }
+
+    bool searchUtil(TrieNode* ptr,string word){
+        if(word.length() == 0){
+            cout << word << " : " << "Hi 1" << endl;
+            return ptr->isTerminal;
+        }
+
+        if(word[0] == '.'){
+            for(auto c: ptr->child)
+                    if(c && searchUtil(c, word.substr(1))) return true;
+        }
+        else if(ptr->child[word[0]-'a'] != NULL){
+            return searchUtil(ptr->child[word[0]-'a'], word.substr(1));
+        }
+        else{
+            return false;
+        }
+
+        return false;
+    }
+    
+    bool search(string word) {
+        return searchUtil(root,word);
+    }
+};
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
