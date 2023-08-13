@@ -1,0 +1,73 @@
+This code is an implementation of evaluating Reverse Polish Notation (RPN) expressions using a stack. RPN, also known as postfix notation, is a mathematical notation in which every operator follows all of its operands.
+The convert function is used to convert a string representation of an integer (with potential negative sign) into a numerical value. It iterates through the string and constructs the integer accordingly, handling the negative sign if present.
+The convertback function does the reverse operation, converting a numerical value back to its string representation. It handles both positive and negative numbers.
+The evalRPN function is the main part of the code where the evaluation of the RPN expression takes place. It uses a stack to keep track of operands and operators as it iterates through the given tokens. If a token is an operator (+, -, *, /), it pops the top two values from the stack, applies the operation, and pushes the result back onto the stack in string format. If a token is an operand (a numerical value), it's pushed onto the stack.
+After processing all tokens, the stack should contain only one element, which is the final result of the expression. The convert function is used to convert this result from string format to a numerical value, and that value is returned as the result of the evaluation.
+In summary, this code takes a vector of tokens representing an RPN expression, evaluates it step by step using a stack, and returns the final result. It handles both integer calculations and the conversion between integer values and their string representations.
+
+  if (neg)ans.push_back('-');
+    reverse(ans.begin(),ans.end());
+    return ans;
+What does this part do?
+
+This part of the code handles the conversion of a numerical value back to its string representation, including handling negative numbers. Let's break down each step:
+if (neg) ans.push_back('-');: This line checks if the input numerical value is negative (neg is true). If it's negative, it adds a negative sign (-) to the beginning of the string representation.
+reverse(ans.begin(), ans.end());: After handling the negative sign (if applicable), the string representation is then reversed. This is done because the digits were originally added to the string from the least significant digit to the most significant digit during the conversion process. Reversing the string places the most significant digit at the beginning, which is the expected order for a normal numerical representation.
+return ans;: Finally, the modified string representation (with a possible negative sign and in the correct digit order) is returned as the output.
+
+*****************************************************************************
+class Solution {
+private:
+    long long int convert(string s){
+        long long int num=0;
+        for (int i=0; i<s.size(); i++){
+            if (i==0 && s[i]=='-'){continue;}
+            num*= 10;
+            num+= (s[i]-'0');
+        }
+        if (s[0]=='-')num*=-1;
+        return num;
+}
+string convertback(long long int num){
+    string ans;
+    bool neg=0;
+    if (num<0){num*= -1; neg=1;}
+    while (num>0){
+        ans+= ((num%10)+'0');
+        num/=10;
+    } 
+    if (neg)ans.push_back('-');
+    reverse(ans.begin(),ans.end());
+    return ans;
+}
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<string> stk;
+        for (auto val: tokens){
+            if (val=="+"|| val=="-"|| val=="*"|| val=="/"){
+                long long int b= convert(stk.top());
+                stk.pop();
+                long long int a= convert(stk.top());
+                stk.pop();
+                if (val == "+"){
+                    string c= convertback(a+b);
+                    stk.push(c);
+                }
+                else if (val=="*"){
+                    string c= convertback(a*b);
+                    stk.push(c);
+                }
+                else if (val== "-"){
+                    string c= convertback(a-b);
+                    stk.push(c);    
+                }
+                else if (val=="/"){
+                    string c= convertback(a/b);
+                    stk.push(c);
+                }
+            }
+            else stk.push(val);
+        }
+        return convert(stk.top());
+    }
+};
